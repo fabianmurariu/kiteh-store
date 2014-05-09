@@ -1,0 +1,11 @@
+node_modules
+node_modules/*
+logs/*
+target
+target/*
+*.DS_Store
+*.releaseBackup
+release.properties
+*.iml
+.idea
+.idea/*

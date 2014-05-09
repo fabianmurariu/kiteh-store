@@ -1,0 +1,24 @@
+{
+    "name": "tevinzi2",
+    "version": "0.0.1",
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "bootstrap": "twbs/bootstrap",
+        "foundation": "zurb/bower-foundation",
+        "foundation-icons": "zurb/foundation-icon-fonts",
+        "angular": "1.2.x",
+        "angular-route": "~1.2.16",
+        "angular-resource": "~1.2.16",
+        "restangular": "1.4.x",
+        "angular-mocks": "~1.2.x",
+        "ngDialog": "0.1.7"
+    }
+}

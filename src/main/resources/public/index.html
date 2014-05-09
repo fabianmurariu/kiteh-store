@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="lt-ie10" lang="en"> <![endif]-->
+<html lang="en" ng-app="tevinziApp">
+<head>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <link rel="stylesheet" href="components/foundation/css/normalize.css"/>
+    <link rel="stylesheet" href="components/foundation/css/foundation.min.css"/>
+    <link rel="stylesheet" href="components/foundation-icons/foundation-icons.css"/>
+
+    <script src="components/modernizr/modernizr.js"></script>
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/fastclick/lib/fastclick.js"></script>
+    <script src="components/foundation/js/foundation.min.js"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>tevinzi.ro</title>
+</head>
+<body>
+
+<nav class="top-bar" data-topbar>
+    <ul class="title-area">
+        <li class="name"><h1><a href="#">tevinzi.ro</a></h1></li>
+        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    </ul>
+    <section class="top-bar-section"> <!-- Right Nav Section -->
+        <ul class="right">
+            <li><a href="#" class="button">Login</a></li>
+            <li><a href="#" class="button alert" data-reveal-id="signup-modal">Sign up</a></li>
+            <li><a href="#" class="button success"><i class="fi-shopping-cart"></i></a></li>
+            <li class="has-dropdown"><a href="#">Account <i class="fi-torso"></i></a>
+                <ul class="dropdown">
+                    <li><a href="#"><i class="fi-shopping-cart"></i> Shopping Cart</a></li>
+                    <li><a href="#"><i class="fi-key"></i> Settings</a></li>
+                    <li><a href="#"><i class="fi-power"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <!-- Left Nav Section -->
+        <ul class="left">
+            <li><a href="#">More Catz</a></li>
+            <li><a href="#">Even more kitech</a></li>
+        </ul>
+    </section>
+</nav>
+<div class="controller" ng-controller="PostController">
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="panel">
+                <h2>The Cat Store</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="errorMsg">
+        <div class="large-12 columns label alert">
+            <div>{{errorMsg}}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
+                <li ng-repeat="post in posts">
+                    <div class="panel">
+                        <div class="row">
+                            <div class="small-12 columns text-center">
+                                <a href="#/posts/{{post.id}}"><img src="{{post.images[0].sizes[0].url}}" alt="kitech"/></a>
+                            </div>
+                        </div>
+
+                        <p><a href="#/posts/{{post.id}}">{{post.title}}</a></p>
+
+                        <div class="row">
+                            <div class="medium-4 large-4 columns text-left">
+                                <h3>{{post.price}}
+                                    <small>{{post.currency}}</small>
+                                </h3>
+                            </div>
+                            <div class="medium-8 large-8 columns small-text-left medium-text-right">
+                                <a class="button tiny" href="#" ng-click="">add to cart</a>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <a ng-repeat="tag in post.tags" href="#" ng-href="/tags/{{tag}}">
+                                    <div class="label success">{{tag}}</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="large-12 columns text-center">
+            <div class="button expand" ng-click="loadMore()">Load More</div>
+        </div>
+    </div>
+</div>
+<div class="reveal-modal medium" id="signup-modal" data-reveal>
+    <div class="controller" ng-controller="LoginController">
+    <div class="row">
+        <div class="large-12 columns">
+            <a class="button expand" href="#" ng-click="select('facebook')">Facebook</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <a class="button alert expand" href="#" ng-click="select('google')">Google</a>
+        </div>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+    </div>
+</div>
+
+</body>
+<script> $(document).foundation(); </script>
+<script src="components/angular/angular.js"></script>
+<script src="components/angular-route/angular-route.js"></script>
+<script src="components/angular-resource/angular-resource.js"></script>
+<script src="components/ngDialog/js/ngDialog.min.js"></script>
+<script src="components/restangular/dist/restangular.min.js"></script>
+<script src="components/lodash/dist/lodash.compat.min.js"></script>
+<script src="components/app/js/app.js"></script>
+<script src="components/app/js/controllers.js"></script>
+<script src="components/app/js/services.js"></script>
+</html>
