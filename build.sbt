@@ -13,7 +13,9 @@ libraryDependencies ++= Seq(
   "com.fasterxml.jackson.module" % "jackson-module-jsonSchema" % "2.3.3",
   "net._01001111" % "jlorem" % "1.3",
   "com.typesafe" % "config" % "1.2.1",
-  "oauth.signpost" % "signpost-core" % "1.2.1.2"
+  "org.mockito" % "mockito-core" % "1.9.5",
+  "org.apache.httpcomponents" % "httpclient" % "4.3.3",
+  "org.mongodb" %% "casbah" % "2.7.2"
 )
 
 resolvers +=

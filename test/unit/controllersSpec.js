@@ -42,15 +42,18 @@ describe('tevinzi.ro controllers', function () {
     });
 
     describe('LoginController', function(){
-        var loginController, scope, fakeWindow;
+        var loginController, scope, fakeWindow, fakeTimeout;
 
         beforeEach(inject(function($controller, $rootScope){
             scope = $rootScope;
             fakeWindow = {
               open : function(obj){}
             };
+
+            fakeTimeout = function(fn, tm) {fn()}
+
             spyOn(fakeWindow, 'open').andCallThrough();
-            loginController = $controller('LoginController', {$scope: $rootScope, $window: fakeWindow})
+            loginController = $controller('LoginController', {$scope: $rootScope, $window: fakeWindow, $timeout: fakeTimeout})
         }));
 
         it('should select google', inject(function(){

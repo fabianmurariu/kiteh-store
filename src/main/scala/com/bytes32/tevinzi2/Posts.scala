@@ -11,17 +11,20 @@ import scala.util.Random
 /**
  * Test class not an actual storage
  */
-class Posts extends IdGenerator with MockPostGenerator{
+class Posts extends IdGenerator with MockPostGenerator {
 
   var postIndex = Map[String, Post]()
   var posts = List[Post]()
 
-  posts ++= 1 to 13 map {
-    x =>
-      val id = generateId
-      val randomPost = makeRandomPost(id)
-      postIndex = postIndex + ((id, randomPost))
-      randomPost
+  def makePosts: Posts = {
+    posts ++= 1 to 13 map {
+      x =>
+        val id = generateId
+        val randomPost = makeRandomPost(id)
+        postIndex = postIndex + ((id, randomPost))
+        randomPost
+    }
+    this
   }
 
   def update(postId: String, post: Post): Future[Unit] = {
@@ -40,7 +43,7 @@ class Posts extends IdGenerator with MockPostGenerator{
 
   def getPosts(offset: Int, limit: Int, query: Option[String]): Future[Iterable[Post]] = {
     Future {
-      posts.view(offset, offset + limit).filter{
+      posts.view(offset, offset + limit).filter {
         post =>
           postIndex.contains(post.id.get)
       }
@@ -74,4 +77,8 @@ class Posts extends IdGenerator with MockPostGenerator{
       } else throw new NotFound()
     }
   }
+}
+
+object Posts {
+  def makeMockPosts: Posts = new Posts().makePosts
 }

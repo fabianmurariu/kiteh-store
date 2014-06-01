@@ -1,5 +1,8 @@
 package com.bytes32.tevinzi2.data
 
-class Auth {
+case class Auth(id: String, provider: String, scope: Iterable[String],
+                authorizationCode: Option[String] = None,
+                accessCode: Option[String] = None,
+                ttl: Int = -1) {
 
 }

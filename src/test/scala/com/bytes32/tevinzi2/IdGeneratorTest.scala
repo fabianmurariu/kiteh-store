@@ -9,7 +9,7 @@ class IdGeneratorTest extends FlatSpec with ShouldMatchers {
   val gen = new IdGenerator {}
 
   "generateId" should "be all letters and numbers with + = and -" in {
-    gen.generateId should fullyMatch regex "[0-9a-zA-Z\\+=_]+".r
+    gen.generateId should fullyMatch regex "[0-9a-zA-Z\\+=_|]+".r
   }
 
   behavior of  "toString"

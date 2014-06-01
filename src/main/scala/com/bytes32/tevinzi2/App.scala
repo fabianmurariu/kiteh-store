@@ -2,6 +2,8 @@ package com.bytes32.tevinzi2
 
 import com.twitter.finatra._
 import com.twitter.finatra.ContentType._
+import com.bytes32.tevinzi2.data.Auth
+import com.bytes32.tevinzi2.http.Client
 
 object App extends FinatraServer {
 
@@ -219,6 +221,6 @@ object App extends FinatraServer {
 
   }
 
-  register(new PostsController(new Posts))
-  register(new AuthController(new AuthService {}))
+  register(new PostsController(Posts.makeMockPosts))
+  register(new AuthController(new AuthService(new Crud[Auth, String] {}, new Client {}) {}))
 }

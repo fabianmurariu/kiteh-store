@@ -27,7 +27,7 @@ tevinziControllers.controller('PostController', ['$scope', 'PostService', functi
 
 }]);
 
-tevinziControllers.controller('LoginController', ['$scope', '$window', function ($scope, $window) {
+tevinziControllers.controller('LoginController', ['$scope', '$window', '$timeout', '$cookies', function ($scope, $window, $timeout, $cookies) {
     $scope.select = function (provider) {
         if (provider === 'google') {
             $scope.loginDialog = '/signup/google';
@@ -37,6 +37,20 @@ tevinziControllers.controller('LoginController', ['$scope', '$window', function 
             $scope.loginDialog = ''
         }
         if ($scope.loginDialog !== '') {
+            console.log("Start");
+            console.log(document.cookie);
+            var count = 0;
+            var checkCookies = function (){
+                count = count + 1;
+                if (count < 300){
+                    $timeout(checkCookies, 5000)
+                }
+                if ($cookies.authKey !== 'None'){
+
+                }
+            };
+            $timeout(checkCookies, 500);
+            console.log("WINDOW OPEN!");
             $window.open($scope.loginDialog, "_blank", "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
         }
     };

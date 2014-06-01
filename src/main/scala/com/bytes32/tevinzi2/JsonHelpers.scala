@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import scala.util.{Success, Try}
+import java.io.InputStream
 
 object JsonHelpers {
 
@@ -23,13 +24,17 @@ object JsonHelpers {
 
   implicit class JsonStringToObject(json: String) {
     def fromJson[T]()(implicit m: Manifest[T]): T = mapper.readValue(json)
-
     /**
      * Returns a Try object and wraps outcome of deserialization
      * @return
      *         Object from JSON
      */
     def fromJsonSafe[T]()(implicit m: Manifest[T]): Try[T] = Try(mapper.readValue(json))
+  }
+
+  implicit class JsonInputStreamToObject(json: InputStream) {
+    def fromJsonSafe(): Try[JsonNode] = Try(mapper.readTree(json))
+    def fromJson(): JsonNode = mapper.readTree(json)
   }
 
 }

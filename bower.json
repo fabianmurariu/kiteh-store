@@ -19,6 +19,7 @@
         "angular-resource": "~1.2.16",
         "restangular": "1.4.x",
         "angular-mocks": "~1.2.x",
+        "angular-cookies": "~1.2.x",
         "ngDialog": "0.1.7"
     }
 }
