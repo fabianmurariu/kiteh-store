@@ -37,21 +37,24 @@ tevinziControllers.controller('LoginController', ['$scope', '$window', '$timeout
             $scope.loginDialog = ''
         }
         if ($scope.loginDialog !== '') {
-            console.log("Start");
-            console.log(document.cookie);
-            var count = 0;
-            var checkCookies = function (){
-                count = count + 1;
-                if (count < 300){
-                    $timeout(checkCookies, 5000)
-                }
-                if ($cookies.authKey !== 'None'){
+            const loginWindow = $window.open($scope.loginDialog, "_blank", "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+            const maxAuthWindowCheckAttempts = 300;
+            const waitBeforeRecheckAuthWindow = 5000;
+            const checkCookies = function(count){
+                return function(){
+                  if (count < maxAuthWindowCheckAttempts){
+                      $timeout(checkCookies(count+1), waitBeforeRecheckAuthWindow);
+                  } else if($cookies.authKey !== 'None' || ($cookies.authKey === undefined && count >= maxAuthWindowCheckAttempts)) {
+                      loginWindow.close();
+                  } else if($cookies.authKey === 'None') {
 
-                }
+                  } else {
+                      console.log("Unable to login for unknown reason");
+                      loginWindow.close();
+                  }
+                };
             };
-            $timeout(checkCookies, 500);
-            console.log("WINDOW OPEN!");
-            $window.open($scope.loginDialog, "_blank", "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+            $timeout(checkCookies(0), waitBeforeRecheckAuthWindow);
         }
     };
 }]);

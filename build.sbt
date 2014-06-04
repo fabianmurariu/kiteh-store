@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.2.1",
   "org.mockito" % "mockito-core" % "1.9.5",
   "org.apache.httpcomponents" % "httpclient" % "4.3.3",
-  "org.mongodb" %% "casbah" % "2.7.2"
+  "org.mongodb" %% "casbah" % "2.7.2",
+  "com.novus" %% "salat" % "1.9.8"
 )
 
 resolvers +=
