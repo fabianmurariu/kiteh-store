@@ -44,9 +44,9 @@ class AuthServiceTest extends FreeSpec with ShouldMatchers with MockitoSugar {
             val actual = Await.result(srv.auth(key = state, authCode = "1", "google"))
             verify(client).post(authorizeUri, postArgs)
             val expected = auth.copy(accessCode = Some("acc2"), authorizationCode = Some("1"), ttl = 1234)
-            actual.id should be(state)
+            actual._id should be(state)
             actual should be(expected)
-            srv.get(actual.id) should be(Some(expected))
+            srv.get(actual._id) should be(Some(expected))
           case _ => fail("could not find state")
         }
       }
@@ -70,9 +70,9 @@ class AuthServiceTest extends FreeSpec with ShouldMatchers with MockitoSugar {
             val actual = Await.result(srv.auth(key = state, authCode = "1", "facebook"))
             verify(client).get(authorizeUri, getArgs)
             val expected = auth.copy(accessCode = Some("acc2"), authorizationCode = Some("1"), ttl = 1234)
-            actual.id should be(state)
+            actual._id should be(state)
             actual should be(expected)
-            srv.get(actual.id) should be(Some(expected))
+            srv.get(actual._id) should be(Some(expected))
           case _ => fail("could not find state")
         }
       }

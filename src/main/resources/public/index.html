@@ -19,7 +19,7 @@
     <title>tevinzi.ro</title>
 </head>
 <body>
-
+<div ng-controller="LoginController">
 <nav class="top-bar" data-topbar>
     <ul class="title-area">
         <li class="name"><h1><a href="#">tevinzi.ro</a></h1></li>
@@ -28,14 +28,12 @@
     </ul>
     <section class="top-bar-section"> <!-- Right Nav Section -->
         <ul class="right">
-            <li><a href="#" class="button">Login</a></li>
-            <li><a href="#" class="button alert" data-reveal-id="signup-modal">Sign up</a></li>
+            <li ng-show="isLoggedOut()"><a href="#" class="button alert" data-reveal-id="signup-modal">Sign in</a></li>
             <li><a href="#" class="button success"><i class="fi-shopping-cart"></i></a></li>
-            <li class="has-dropdown"><a href="#">Account <i class="fi-torso"></i></a>
+            <li class="has-dropdown" ng-show="isLoggedIn()"><a href="#">Account <i class="fi-torso"></i></a>
                 <ul class="dropdown">
-                    <li><a href="#"><i class="fi-shopping-cart"></i> Shopping Cart</a></li>
                     <li><a href="#"><i class="fi-key"></i> Settings</a></li>
-                    <li><a href="#"><i class="fi-power"></i> Logout</a></li>
+                    <li><a href="#"><i class="fi-power"></i>Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -46,6 +44,12 @@
         </ul>
     </section>
 </nav>
+<div class="row" ng-show="errorMsg">
+    <div class="large-12 columns label alert">
+        <div>{{errorMsg}}</div>
+    </div>
+</div>
+</div>
 <div class="controller" ng-controller="PostController">
     <div class="row">
         <div class="large-12 columns">

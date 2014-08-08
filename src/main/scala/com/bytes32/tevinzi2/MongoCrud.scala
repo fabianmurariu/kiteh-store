@@ -4,7 +4,8 @@ import com.novus.salat._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
 
-class MongoCrud[T <: AnyRef, Key](mongo: MongoClient, db: String = "test", collection: String = "collection")(implicit m: Manifest[T]) extends Crud[T, Key] {
+class MongoCrud[T <: AnyRef, Key](mongo: MongoClient, db: String = "test", collection: String = "collection")
+                                 (implicit m: Manifest[T], implicit val writeConcern: WriteConcern = WriteConcern.JournalSafe) extends Crud[T, Key] {
 
   private val col = new MongoCollection(mongo.getDB(db).getCollection(collection))
 
@@ -20,7 +21,7 @@ class MongoCrud[T <: AnyRef, Key](mongo: MongoClient, db: String = "test", colle
 
   override def remove(key: Key): Unit = ???
 
-  override def save(key: Key, obj: T): Unit = col.insert(obj, WriteConcern.JournalSafe)
+  override def save(key: Key, obj: T): Unit = col.insert(obj)
 
   override def list(offset: Int, limit: Int, query: Option[String]): Iterable[T] = ???
 }

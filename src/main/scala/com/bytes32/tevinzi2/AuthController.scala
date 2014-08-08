@@ -1,6 +1,7 @@
 package com.bytes32.tevinzi2
 
 import com.bytes32.tevinzi2.Errors.{Unauthorized, NotFound, BadRequest}
+import com.twitter.finatra.ResponseBuilder
 import scala.util.{Failure, Success}
 import com.twitter.util.{Duration, Future}
 import com.twitter.finagle.http.Cookie
@@ -27,19 +28,25 @@ class AuthController(auth: AuthService) extends ErrorController {
       val key = request.getParam("state")
       val code = request.getParam("code")
       val provider = request.routeParams.getOrElse("who", "None")
+
+      def failed:PartialFunction[Throwable, Future[ResponseBuilder]] = {
+        case throwable:Throwable =>
+          render.static("close.html").status(401).cookie("authKey", "None").toFuture
+      }
+
       if (key != null && code != null) {
-        auth.auth(key, code, provider)
-          .map(auth => {
-          val cookie: Cookie = new Cookie("authKey", auth.id)
-          cookie.maxAge = Duration.fromSeconds(Integer.MIN_VALUE) //causes the cookie to expire when the browser is closed
-          cookie.httpOnly = false
-          cookie.path = "/"
-          render.plain("").status(200).cookie(cookie)
-        })
-          .rescue({
-          case failed =>
-            render.plain("").status(401).cookie("authKey", "None").toFuture
-        })
+        try{
+          auth.auth(key, code, provider)
+            .map(auth => {
+            val cookie: Cookie = new Cookie("authKey", auth._id)
+            cookie.maxAge = Duration.fromSeconds(Integer.MIN_VALUE) //causes the cookie to expire when the browser is closed
+            cookie.httpOnly = false
+            cookie.path = "/"
+            render.static("close.html").status(200).cookie(cookie)
+          }).rescue(failed)
+        } catch failed
+
+
       } else throw Unauthorized()
   }
 

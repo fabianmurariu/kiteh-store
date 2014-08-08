@@ -27,7 +27,31 @@ tevinziControllers.controller('PostController', ['$scope', 'PostService', functi
 
 }]);
 
-tevinziControllers.controller('LoginController', ['$scope', '$window', '$timeout', '$cookies', function ($scope, $window, $timeout, $cookies) {
+tevinziControllers.controller('LoginController', ['$scope', '$window', '$timeout', '$cookies', "$rootScope", function ($scope, $window, $timeout, $cookies, $rootScope) {
+    $scope.isLoggedIn = function () {
+        return $cookies.authKey !== undefined && $cookies.authKey !== 'None';
+    };
+
+    $scope.isLoggedOut = function () {
+        return $cookies.authKey === 'None' || $cookies.authKey === undefined
+    };
+
+    $rootScope.$on("doneLogin", function(event, errMsg){
+        var modal = $('#signup-modal');
+        modal.foundation('reveal', 'close');
+        $scope.$apply(function(){
+            $scope.errorMsg = errMsg;
+        });
+        $timeout(function () {
+            $scope.errorMsg = undefined;
+        }, 5000);
+    });
+
+    $scope.dismissLogin = function (loginWindow, errMsg) {
+        loginWindow.close();
+        $rootScope.$broadcast("doneLogin", errMsg);
+    };
+
     $scope.select = function (provider) {
         if (provider === 'google') {
             $scope.loginDialog = '/signup/google';
@@ -37,24 +61,24 @@ tevinziControllers.controller('LoginController', ['$scope', '$window', '$timeout
             $scope.loginDialog = ''
         }
         if ($scope.loginDialog !== '') {
-            const loginWindow = $window.open($scope.loginDialog, "_blank", "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
-            const maxAuthWindowCheckAttempts = 300;
-            const waitBeforeRecheckAuthWindow = 5000;
-            const checkCookies = function(count){
-                return function(){
-                  if (count < maxAuthWindowCheckAttempts){
-                      $timeout(checkCookies(count+1), waitBeforeRecheckAuthWindow);
-                  } else if($cookies.authKey !== 'None' || ($cookies.authKey === undefined && count >= maxAuthWindowCheckAttempts)) {
-                      loginWindow.close();
-                  } else if($cookies.authKey === 'None') {
-
-                  } else {
-                      console.log("Unable to login for unknown reason");
-                      loginWindow.close();
-                  }
-                };
+            var loginWindow = $window.open($scope.loginDialog, "_blank", "width=780,height=410,toolbar=0,scrollbars=0,status=0,resizable=0,location=0,menuBar=0");
+            loginWindow.onbeforeunload = function () {
+                if ($cookies.authKey === 'None' || $cookies.authKey === undefined) {
+                    $scope.authReason = "Fail to authenticate no response from server";
+                    $scope.dismissLogin(loginWindow, $scope.authReason);
+                } else if ($cookies.authKey !== undefined && $cookies.authKey !== 'None') {
+                    /* success */
+                    $scope.authReason = "Success";
+                    $scope.dismissLogin(loginWindow, undefined);
+                } else {
+                    $scope.authReason = "Unknown";
+                    $scope.dismissLogin(loginWindow, "Unable to authenticate");
+                }
             };
-            $timeout(checkCookies(0), waitBeforeRecheckAuthWindow);
         }
     };
+
+    $scope.profile = function () {
+
+    }
 }]);

@@ -35,7 +35,7 @@ class AuthService(data: Crud[Auth, String], client: Client) extends IdGenerator 
     })
     authData match {
       case Some(auth) =>
-        data.save(auth.id, auth)
+        data.save(auth._id, auth)
         val providerConfig = config.getConfig("auth").getConfig(auth.provider)
         val clientId = providerConfig.getString("client_id")
         val clientSecret = providerConfig.getString("client_secret")
@@ -62,7 +62,7 @@ class AuthService(data: Crud[Auth, String], client: Client) extends IdGenerator 
             (codeOption, ttlOption) match {
               case (Some(code), Some(ttl)) =>
                 val successAuth = auth.copy(accessCode = Some(code), ttl = ttl.toInt)
-                data.save(successAuth.id, successAuth)
+                data.save(successAuth._id, successAuth)
                 successAuth
               case _ => throw Unauthorized()
             }
